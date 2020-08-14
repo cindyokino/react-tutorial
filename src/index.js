@@ -2,16 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// class Square extends React.Component {
-//   render() {
-//     return (
-//       <button className="square" onClick={() => this.props.onClick({value: 'X'})}>
-//         {this.props.value}
-//       </button>
-//       );
-//     }
-//   }
-
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
@@ -25,13 +15,17 @@ function Square(props) {
       super(props);
       this.state = {
         squares: Array(9).fill(null),
+        xIsNext: true,
       };
     }
 
     handleClick(i) {
       const squares = this.state.squares.slice(); //the .slice() method to creates a copy of the squares array to modify instead of modifying the existing array
-      squares[i] = 'X';
-      this.setState({squares: squares});
+      squares[i] = this.state.xIsNext ? 'X' : 'O'; //if true 'X', else 'O' 
+      this.setState({
+        squares: squares,
+        xIsNext: !this.state.xIsNext, //xIsNext (a boolean) will be flipped to determine which player goes next and the game’s state will be saved
+      });
     }
 
     renderSquare(i) {
@@ -44,7 +38,7 @@ function Square(props) {
     }
   
     render() {
-      const status = 'Next player: X';
+      const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O'); //renders after each click
   
       return (
         <div>
